@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+:root {
+  --background: #faf8f5;
+  --foreground: #1c1c1c;
+  --primary: #e94e8a;
+  --primary-dark: #c73b70;
+  --secondary: #a6c63f;
+  --secondary-dark: #6e8a1f;
+  --surface: #ffffff;
+  --text-primary: #1c1c1c;
+  --text-secondary: #666666;
+  --border: #e5e5e5;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-dark: var(--primary-dark);
+  --color-secondary: var(--secondary);
+  --color-secondary-dark: var(--secondary-dark);
+  --color-surface: var(--surface);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-border: var(--border);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+  --container-container: 1200px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), Arial, Helvetica, sans-serif;
+}
+
+button,
+a,
+input {
+  font: inherit;
+}
+
+.scrapbook-border {
+  border: 2px solid var(--border);
+  position: relative;
+}
+
+.scrapbook-border::after {
+  background: rgb(233 78 138 / 5%);
+  border-radius: inherit;
+  bottom: -4px;
+  content: "";
+  left: 4px;
+  position: absolute;
+  right: -4px;
+  top: 4px;
+  z-index: -1;
+}
