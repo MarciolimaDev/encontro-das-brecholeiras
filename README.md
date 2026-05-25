@@ -11,6 +11,10 @@ Portal web da Associação Encontro das Brecholeiras, criado para conectar brech
 ![Framer Motion](https://img.shields.io/badge/Framer_Motion-Animações-0055FF?style=for-the-badge&logo=framer&logoColor=white)
 ![SQLite](https://img.shields.io/badge/SQLite-local-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
 
+## Screenshot
+
+<img src="https://i.postimg.cc/gkNDWMPf/Captura-de-tela-2026-05-25-094646.png" alt="Tela inicial do Encontro das Brecholeiras" width="100%" />
+
 ## Stack
 
 - **Frontend:** Next.js 16, React 19, TypeScript, Tailwind CSS 4 e Framer Motion.
