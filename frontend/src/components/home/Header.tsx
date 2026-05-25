@@ -35,7 +35,7 @@ export function Header() {
         </nav>
 
         <a
-          href="#newsletter"
+          href="/cadastro"
           className="shrink-0 rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-white shadow-md transition hover:bg-primary-dark active:scale-95"
         >
           Quero Participar
