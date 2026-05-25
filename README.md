@@ -20,7 +20,7 @@ Portal web da Associação Encontro das Brecholeiras, um projeto para conectar b
 
 ## Features Atuais
 
-- Landing page institucional baseada no layout do Stitch.
+- Landing page institucional.
 - Seções componentizadas no frontend:
   - Header
   - Hero

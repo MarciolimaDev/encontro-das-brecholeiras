@@ -1,18 +1,55 @@
+"use client";
+
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { brecholeiras } from "./data";
 
+const container = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08 },
+  },
+};
+
+const item = {
+  hidden: { opacity: 0, y: 18 },
+  visible: { opacity: 1, y: 0 },
+};
+
 export function FeaturedBrecholeirasSection() {
   return (
-    <section className="bg-[#fff0f4] py-10">
+    <section className="bg-[#fff0f4] py-14">
       <div className="mx-auto max-w-container px-6">
-        <div className="mb-10 text-center">
-          <h2 className="mb-4 font-display text-3xl font-bold text-text-primary md:text-4xl">Brecholeiras em Destaque</h2>
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.35 }}
+          variants={item}
+          transition={{ duration: 0.55, ease: "easeOut" }}
+          className="mb-10 text-center"
+        >
+          <h2 className="mb-4 font-display text-3xl font-bold text-text-primary md:text-4xl">
+            Brecholeiras em Destaque
+          </h2>
           <p className="text-text-secondary">Conheça as curadoras que fazem a moda circular acontecer</p>
-        </div>
+        </motion.div>
 
-        <div className="flex flex-wrap justify-center gap-10">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.25 }}
+          variants={container}
+          className="flex flex-wrap justify-center gap-10"
+        >
           {brecholeiras.map((person) => (
-            <article key={person.handle} className="group text-center">
+            <motion.article
+              key={person.handle}
+              variants={item}
+              transition={{ duration: 0.45, ease: "easeOut" }}
+              whileHover={{ y: -5 }}
+              className="group text-center"
+            >
               <div
                 className={
                   person.tone === "primary"
@@ -24,9 +61,9 @@ export function FeaturedBrecholeirasSection() {
               </div>
               <h3 className="text-sm font-semibold text-text-primary">{person.name}</h3>
               <p className="text-xs text-primary">{person.handle}</p>
-            </article>
+            </motion.article>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

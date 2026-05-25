@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { logoUrl } from "./data";
 import { Icon } from "./Icon";
@@ -8,7 +11,13 @@ const institutionalLinks = ["Termos de Uso", "Privacidade", "Contato"];
 export function Footer() {
   return (
     <footer className="border-t border-border bg-[#f5dde1]">
-      <div className="mx-auto flex w-full max-w-container flex-col items-center justify-between gap-10 px-6 py-10 md:flex-row">
+      <motion.div
+        initial={{ opacity: 0, y: 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.55, ease: "easeOut" }}
+        className="mx-auto flex w-full max-w-container flex-col items-center justify-between gap-10 px-6 py-10 md:flex-row"
+      >
         <div className="flex flex-col items-center gap-4 md:items-start">
           <div className="flex items-center gap-2">
             <Image
@@ -26,9 +35,9 @@ export function Footer() {
           </p>
           <div className="flex gap-4 text-primary">
             {(["public", "camera", "mail"] as const).map((icon) => (
-              <a key={icon} className="transition hover:scale-110" href="#">
+              <motion.a key={icon} whileHover={{ y: -3, scale: 1.08 }} className="transition" href="#">
                 <Icon name={icon} className="h-6 w-6" />
-              </a>
+              </motion.a>
             ))}
           </div>
         </div>
@@ -37,7 +46,7 @@ export function Footer() {
           <FooterLinks title="Links Rápidos" links={quickLinks} />
           <FooterLinks title="Institucional" links={institutionalLinks} />
         </div>
-      </div>
+      </motion.div>
       <div className="border-t border-border py-4 text-center">
         <p className="text-xs text-text-secondary/60">Desenvolvido com carinho para a moda sustentável.</p>
       </div>
