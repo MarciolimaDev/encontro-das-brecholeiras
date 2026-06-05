@@ -6,17 +6,20 @@ import { HeroSection } from "@/components/home/HeroSection";
 import { MissionSection } from "@/components/home/MissionSection";
 import { NewsletterSection } from "@/components/home/NewsletterSection";
 import { ProductsSection } from "@/components/home/ProductsSection";
+import { getPublicEvents, getPublicFeaturedBrands, getPublicProducts } from "@/lib/public-events";
 
-export default function Home() {
+export default async function Home() {
+  const [events, featuredBrands, products] = await Promise.all([getPublicEvents(), getPublicFeaturedBrands(), getPublicProducts()]);
+
   return (
     <>
       <Header />
       <main className="pt-20">
         <HeroSection />
         <MissionSection />
-        <EventsSection />
-        <FeaturedBrecholeirasSection />
-        <ProductsSection />
+        <EventsSection events={events.slice(0, 3)} />
+        <FeaturedBrecholeirasSection brands={featuredBrands} />
+        <ProductsSection products={products} />
         <NewsletterSection />
       </main>
       <Footer />

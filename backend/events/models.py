@@ -6,7 +6,7 @@ from django.utils.text import slugify
 
 
 def event_banner_upload_to(instance, filename):
-    return f"events/banners/{uuid.uuid4().hex}.avif"
+    return f"events/banners/{uuid.uuid4().hex}.webp"
 
 
 class Event(models.Model):

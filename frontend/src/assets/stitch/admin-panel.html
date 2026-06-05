@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+
+<html lang="pt-br"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#ffffff",
+                        "on-surface-variant": "#574147",
+                        "on-primary-container": "#fffbff",
+                        "surface-container-highest": "#f5dde1",
+                        "primary-container": "#cf3a76",
+                        "tertiary-container": "#00881f",
+                        "outline": "#8b7077",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed-dim": "#5fe060",
+                        "primary-fixed-dim": "#ffb1c7",
+                        "outline-variant": "#debec6",
+                        "inverse-on-surface": "#ffecef",
+                        "on-tertiary-fixed-variant": "#00530f",
+                        "on-secondary-fixed": "#161e00",
+                        "on-tertiary-container": "#f7fff0",
+                        "surface-variant": "#f5dde1",
+                        "on-primary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#cef064",
+                        "surface-tint": "#b12060",
+                        "surface-dim": "#ecd4d9",
+                        "on-background": "#25181b",
+                        "inverse-primary": "#ffb1c7",
+                        "on-secondary-container": "#566c00",
+                        "surface-container-low": "#fff0f2",
+                        "surface-bright": "#fff8f8",
+                        "on-secondary-fixed-variant": "#3c4d00",
+                        "primary-fixed": "#ffd9e2",
+                        "on-surface": "#25181b",
+                        "error": "#ba1a1a",
+                        "secondary": "#516600",
+                        "surface-container": "#ffe8ed",
+                        "surface-container-lowest": "#ffffff",
+                        "background": "#fff8f8",
+                        "primary": "#ae1c5e",
+                        "tertiary-fixed": "#7cfe79",
+                        "surface": "#fff8f8",
+                        "surface-container-high": "#fae2e7",
+                        "tertiary": "#006b16",
+                        "secondary-fixed-dim": "#b2d34b",
+                        "on-primary-fixed-variant": "#8e0048",
+                        "on-primary-fixed": "#3f001c",
+                        "on-tertiary-fixed": "#002203",
+                        "inverse-surface": "#3b2d30",
+                        "secondary-container": "#cef064"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "gutter": "20px",
+                        "xs": "4px",
+                        "xl": "40px",
+                        "container-max": "1200px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans", "sans-serif"],
+                        "body": ["Be Vietnam Pro", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; background-color: #fff8f8; }
+        h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .sidebar-active { border-left: 4px solid #ae1c5e; background-color: #ffe8ed; color: #ae1c5e; }
+        .stat-card-shadow { box-shadow: 0 4px 20px rgba(174, 28, 94, 0.04); }
+    </style>
+</head>
+<body class="text-on-background">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar -->
+<aside class="w-72 bg-surface-container-lowest border-r border-outline-variant flex flex-col hidden lg:flex">
+<div class="p-6 border-b border-outline-variant flex items-center gap-3">
+<div class="size-8 text-primary">
+<svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M44 11.2727C44 14.0109 39.8386 16.3957 33.69 17.6364C39.8386 18.877 44 21.2618 44 24C44 26.7382 39.8386 29.123 33.69 30.3636C39.8386 31.6043 44 33.9891 44 36.7273C44 40.7439 35.0457 44 24 44C12.9543 44 4 40.7439 4 36.7273C4 33.9891 8.16144 31.6043 14.31 30.3636C8.16144 29.123 4 26.7382 4 24C4 21.2618 8.16144 18.877 14.31 17.6364C8.16144 16.3957 4 14.0109 4 11.2727C4 7.25611 12.9543 4 24 4C35.0457 4 44 7.25611 44 11.2727Z"></path>
+</svg>
+</div>
+<h1 class="text-lg font-bold tracking-tight text-on-surface">Brecholeiras</h1>
+</div>
+<nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+<div class="px-3 py-2 text-xs font-semibold text-outline uppercase tracking-wider">Main Navigation</div>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg sidebar-active" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-medium">Members</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+<span class="font-medium">Events Management</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="eco">eco</span>
+<span class="font-medium">Impact Reports</span>
+</a>
+<div class="pt-6 px-3 py-2 text-xs font-semibold text-outline uppercase tracking-wider">Moderation</div>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+<span class="font-medium">Approval Queue</span>
+<span class="ml-auto bg-primary text-white text-[10px] px-2 py-0.5 rounded-full">12</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="report">report</span>
+<span class="font-medium">Reported Garimpos</span>
+<span class="ml-auto bg-secondary text-white text-[10px] px-2 py-0.5 rounded-full">3</span>
+</a>
+<div class="pt-6 px-3 py-2 text-xs font-semibold text-outline uppercase tracking-wider">Settings</div>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-medium">System Configuration</span>
+</a>
+</nav>
+<div class="p-4 border-t border-outline-variant">
+<div class="flex items-center gap-3 bg-surface-container-low p-3 rounded-xl">
+<img class="size-10 rounded-full border border-outline-variant" data-alt="A professional headshot of a woman with a creative and friendly look, wearing sustainable fashion accessories, captured in a bright studio with soft, warm light and a clean light pink background. The style is professional yet approachable, fitting the brand's circular fashion focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBG8Xhq3EKSpWZ60K3oa-hqQS_krY2C0XJou9YnjjSr79APKCU8xw70KzQE5WN2snqJ8XY83rX8y5EdkmlWB5pqMMJMbjsrrIq-4gjeGGErjU1oMjhDWdTgQQO1dQdT3mzGQtrtwTHHrlOc6UFctu08IEjcibYtxQEveTfNifGCCSPOJqKgIePLeyZ4A_L2-EZjGNFnp0L3Jyn8Jml5fUjTJQoVoBdP_9L-yWyVXDelOcmkUkEKxIXeeLE81DgX0CogmmjZ2-AHamTw"/>
+<div class="flex flex-col">
+<span class="text-sm font-bold text-on-surface">Marina Souza</span>
+<span class="text-xs text-on-surface-variant">Admin Principal</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col overflow-y-auto relative">
+<!-- Top Navigation -->
+<header class="sticky top-0 z-10 flex items-center justify-between h-16 px-8 bg-surface-container-lowest border-b border-outline-variant">
+<div class="flex items-center gap-4 flex-1">
+<div class="lg:hidden text-on-surface cursor-pointer">
+<span class="material-symbols-outlined">menu</span>
+</div>
+<div class="relative w-full max-w-md">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-outline material-symbols-outlined" data-icon="search">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-full pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary focus:bg-surface-container" placeholder="Search members, events, or reports..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="relative p-2 text-on-surface-variant hover:bg-surface-container rounded-full">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-error rounded-full"></span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container rounded-full">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+</div>
+</header>
+<div class="p-8 space-y-8">
+<!-- Dashboard Header -->
+<section>
+<h2 class="text-3xl font-extrabold text-on-surface tracking-tight">Admin Dashboard</h2>
+<p class="text-on-surface-variant">Welcome back, Marina. Here's what's happening in the circular fashion community today.</p>
+</section>
+<!-- Metrics Overview -->
+<section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+<!-- Stat Card 1 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant stat-card-shadow">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-primary-container/10 text-primary rounded-lg">
+<span class="material-symbols-outlined" data-icon="person_add">person_add</span>
+</div>
+<span class="text-tertiary font-bold text-sm">+5.4%</span>
+</div>
+<p class="text-on-surface-variant text-sm font-medium">Total Members</p>
+<h3 class="text-2xl font-extrabold text-on-surface mt-1">1,280</h3>
+</div>
+<!-- Stat Card 2 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant stat-card-shadow">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-secondary-container/20 text-secondary rounded-lg">
+<span class="material-symbols-outlined" data-icon="event_available">event_available</span>
+</div>
+<span class="text-on-surface-variant font-medium text-sm">Active</span>
+</div>
+<p class="text-on-surface-variant text-sm font-medium">Active Events</p>
+<h3 class="text-2xl font-extrabold text-on-surface mt-1">12</h3>
+</div>
+<!-- Stat Card 3 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant stat-card-shadow">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-tertiary-container/10 text-tertiary rounded-lg">
+<span class="material-symbols-outlined" data-icon="eco">eco</span>
+</div>
+<span class="text-tertiary font-bold text-sm">+12%</span>
+</div>
+<p class="text-on-surface-variant text-sm font-medium">Textile Saved (Impact)</p>
+<h3 class="text-2xl font-extrabold text-on-surface mt-1">450kg</h3>
+</div>
+<!-- Stat Card 4 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant stat-card-shadow">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-primary-container/10 text-primary rounded-lg">
+<span class="material-symbols-outlined" data-icon="how_to_reg">how_to_reg</span>
+</div>
+<span class="text-tertiary font-bold text-sm">New</span>
+</div>
+<p class="text-on-surface-variant text-sm font-medium">New Registrations</p>
+<h3 class="text-2xl font-extrabold text-on-surface mt-1">24</h3>
+</div>
+</section>
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+<!-- Pending Approvals Table -->
+<section class="xl:col-span-2 space-y-4">
+<div class="flex items-center justify-between">
+<h3 class="text-xl font-bold text-on-surface">Pending Approvals</h3>
+<button class="text-primary font-semibold text-sm hover:underline">View All</button>
+</div>
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden">
+<table class="w-full text-left text-sm">
+<thead class="bg-surface-container-low text-on-surface-variant font-semibold">
+<tr>
+<th class="px-6 py-4">Name</th>
+<th class="px-6 py-4">Brand Name</th>
+<th class="px-6 py-4">Date</th>
+<th class="px-6 py-4 text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-6 py-4 font-medium text-on-surface">Ana Silva</td>
+<td class="px-6 py-4 text-on-surface-variant">Vintage Vibes</td>
+<td class="px-6 py-4 text-on-surface-variant">Oct 12, 2023</td>
+<td class="px-6 py-4 text-right space-x-2">
+<button class="bg-tertiary-container/10 text-tertiary px-3 py-1.5 rounded-lg font-bold hover:bg-tertiary-container/20 transition-colors">Approve</button>
+<button class="bg-error-container/10 text-error px-3 py-1.5 rounded-lg font-bold hover:bg-error-container/20 transition-colors">Reject</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-6 py-4 font-medium text-on-surface">Carla Rose</td>
+<td class="px-6 py-4 text-on-surface-variant">EcoGarimpo</td>
+<td class="px-6 py-4 text-on-surface-variant">Oct 11, 2023</td>
+<td class="px-6 py-4 text-right space-x-2">
+<button class="bg-tertiary-container/10 text-tertiary px-3 py-1.5 rounded-lg font-bold hover:bg-tertiary-container/20 transition-colors">Approve</button>
+<button class="bg-error-container/10 text-error px-3 py-1.5 rounded-lg font-bold hover:bg-error-container/20 transition-colors">Reject</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-6 py-4 font-medium text-on-surface">Bia Souza</td>
+<td class="px-6 py-4 text-on-surface-variant">Retro Chic</td>
+<td class="px-6 py-4 text-on-surface-variant">Oct 10, 2023</td>
+<td class="px-6 py-4 text-right space-x-2">
+<button class="bg-tertiary-container/10 text-tertiary px-3 py-1.5 rounded-lg font-bold hover:bg-tertiary-container/20 transition-colors">Approve</button>
+<button class="bg-error-container/10 text-error px-3 py-1.5 rounded-lg font-bold hover:bg-error-container/20 transition-colors">Reject</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-6 py-4 font-medium text-on-surface">Juliana Lima</td>
+<td class="px-6 py-4 text-on-surface-variant">Novo De Novo</td>
+<td class="px-6 py-4 text-on-surface-variant">Oct 09, 2023</td>
+<td class="px-6 py-4 text-right space-x-2">
+<button class="bg-tertiary-container/10 text-tertiary px-3 py-1.5 rounded-lg font-bold hover:bg-tertiary-container/20 transition-colors">Approve</button>
+<button class="bg-error-container/10 text-error px-3 py-1.5 rounded-lg font-bold hover:bg-error-container/20 transition-colors">Reject</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Content Moderation / Reported Garimpos -->
+<section class="space-y-4">
+<div class="flex items-center justify-between">
+<h3 class="text-xl font-bold text-on-surface">Flagged Items</h3>
+<button class="text-secondary font-semibold text-sm hover:underline">Moderation Lab</button>
+</div>
+<div class="space-y-4">
+<div class="bg-surface-container-highest/30 border border-outline-variant p-4 rounded-xl flex gap-4">
+<div class="bg-error-container/20 text-error p-2 h-fit rounded-lg">
+<span class="material-symbols-outlined" data-icon="warning">warning</span>
+</div>
+<div class="flex-1">
+<h4 class="text-sm font-bold text-on-surface">Misleading Price: Silk Blouse</h4>
+<p class="text-xs text-on-surface-variant mt-1">Reported by 3 users for pricing inconsistency with market value.</p>
+<div class="mt-3 flex gap-2">
+<button class="text-[11px] font-bold px-3 py-1 bg-surface-container-lowest border border-outline-variant rounded-md hover:bg-primary-container/10 hover:text-primary transition-colors">Review</button>
+<button class="text-[11px] font-bold px-3 py-1 bg-surface-container-lowest border border-outline-variant rounded-md hover:bg-error-container/10 hover:text-error transition-colors">Dismiss</button>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-highest/30 border border-outline-variant p-4 rounded-xl flex gap-4">
+<div class="bg-error-container/20 text-error p-2 h-fit rounded-lg">
+<span class="material-symbols-outlined" data-icon="new_releases">new_releases</span>
+</div>
+<div class="flex-1">
+<h4 class="text-sm font-bold text-on-surface">Suspicious Activity: Vendor #402</h4>
+<p class="text-xs text-on-surface-variant mt-1">Automated bot detection flagged rapid listing creation (50+ items/min).</p>
+<div class="mt-3 flex gap-2">
+<button class="text-[11px] font-bold px-3 py-1 bg-surface-container-lowest border border-outline-variant rounded-md hover:bg-primary-container/10 hover:text-primary transition-colors">Freeze Account</button>
+<button class="text-[11px] font-bold px-3 py-1 bg-surface-container-lowest border border-outline-variant rounded-md hover:bg-secondary-container/20 hover:text-secondary transition-colors">Verify Manually</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Recent Events Management -->
+<section class="space-y-4 pb-12">
+<div class="flex items-center justify-between">
+<h3 class="text-xl font-bold text-on-surface">Upcoming Community Events</h3>
+<button class="bg-primary text-white px-4 py-2 rounded-lg font-bold text-sm shadow-md shadow-primary/20 flex items-center gap-2 hover:bg-primary-container transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+                            Create New Event
+                        </button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Event Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden group">
+<div class="h-32 bg-primary-container/20 relative">
+<img class="w-full h-full object-cover opacity-80" data-alt="A lively outdoor community clothing swap event set in a sun-drenched city park. Groups of fashion enthusiasts are browsing through colorful vintage racks, chatting, and laughing. The lighting is warm and golden-hour inspired, creating a vibrant, energetic atmosphere with high contrast and deep pink accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrW9iRft_HVcwsVfL-IWKAZdBxoGqqzWXMvhMnbnbcQd76swjvJiTnES37vgHvgmU7Z7oaReQuHVwWbFD1JDZs6Q1rjXR1QO6IBm8b6-QCpHqgeomKcASkKvwj2qbdoCnzGEI_5Q_Y-aKx6cP-j3ftagoSAlIK5kvCdNQiIMzfkgEGw8RB4ea9t3ncEVwBo21JTY1RfGWnolQAUIJXztbvqAlzlNzJVczU9Cpj82mD7KGnxo3XorCx7SewkLoa3Orz4Jy1tINtVAml"/>
+<div class="absolute top-3 right-3 bg-white/90 backdrop-blur px-2 py-1 rounded-md text-[10px] font-bold text-primary">OCT 25</div>
+</div>
+<div class="p-5">
+<h4 class="font-bold text-on-surface group-hover:text-primary transition-colors">Grande Troca de Primavera</h4>
+<p class="text-xs text-on-surface-variant mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">location_on</span>
+                                    Parque da Cidade, SP
+                                </p>
+<div class="mt-4 flex items-center justify-between border-t border-outline-variant pt-4">
+<div class="flex -space-x-2">
+<div class="size-6 rounded-full border-2 border-white bg-slate-200"></div>
+<div class="size-6 rounded-full border-2 border-white bg-slate-300"></div>
+<div class="size-6 rounded-full border-2 border-white bg-slate-400"></div>
+<div class="size-6 rounded-full border-2 border-white flex items-center justify-center bg-surface-container text-[8px] font-bold">+82</div>
+</div>
+<button class="text-xs font-bold text-secondary flex items-center gap-1">
+                                        Edit Details
+                                        <span class="material-symbols-outlined text-[14px]">edit</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Event Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden group">
+<div class="h-32 bg-secondary-container/20 relative">
+<img class="w-full h-full object-cover opacity-80" data-alt="A curated indoor thrift market featuring high-end vintage furniture and clothing. The space is a modern industrial loft with large windows, minimal white walls, and warm wooden floors. Soft, cool natural light fills the space, highlighting the high-quality materials and professional organization of the curated collection." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdKUrl4II3uohJtXcg3f_1GfhyJLcS3AjjJ6pXk37Gru961p7H2LI-oivfYPVF_cNirATFB-YbBl2devL8UslGeOJr5bB02aOapDIy0tCsr3VktyQpAMOHDK07byHJosVcq99uHqHNWkEbkIdUUSiCCH3PhqncQmkibYyTHJUXOxf7lf-TBnQoQO8cXl9imEnWb06JfzGFR97SBQEXV6Dwu50bKag3Em0jWh-ZYDt0prMJB4eOgiF2A04Xziw_lwXevfEGS6araBy0"/>
+<div class="absolute top-3 right-3 bg-white/90 backdrop-blur px-2 py-1 rounded-md text-[10px] font-bold text-primary">NOV 02</div>
+</div>
+<div class="p-5">
+<h4 class="font-bold text-on-surface group-hover:text-primary transition-colors">Curadoria &amp; Café</h4>
+<p class="text-xs text-on-surface-variant mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">location_on</span>
+                                    Vila Madalena, SP
+                                </p>
+<div class="mt-4 flex items-center justify-between border-t border-outline-variant pt-4">
+<div class="flex -space-x-2">
+<div class="size-6 rounded-full border-2 border-white bg-slate-200"></div>
+<div class="size-6 rounded-full border-2 border-white bg-slate-300"></div>
+<div class="size-6 rounded-full border-2 border-white bg-slate-400"></div>
+<div class="size-6 rounded-full border-2 border-white flex items-center justify-center bg-surface-container text-[8px] font-bold">+45</div>
+</div>
+<button class="text-xs font-bold text-secondary flex items-center gap-1">
+                                        Edit Details
+                                        <span class="material-symbols-outlined text-[14px]">edit</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Event Card 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden group">
+<div class="h-32 bg-tertiary-container/20 relative">
+<img class="w-full h-full object-cover opacity-80" data-alt="An educational workshop on upcycling textiles, showing a close-up of skilled hands sewing vibrant fabrics. The scene is lit with bright, clear task lighting in a modern workshop environment. A professional yet creative atmosphere is evoked through the use of high-quality tools and diverse textile swatches." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwzvakWDU83EurP513lmK_x8-a8FXNZ9anhdYY1ggXk55PHZekGx8LKX4qkWdhCNA6UZdbxaChOORru4a1biWDzCFPsGdLn4E3pThTTYotRMAJgZGJlVls34F-AQRFbeA14h0jbOMnLwUi6ZfI6WRjsvkPrEYvISpHoHO53NkmXkbrwnREkUQYA9y4x6KieWFdPQ2NGY3BlEF_mp1c0EZ_OQWsuu0mhJASv16NTwDqy72O_5Gv8JBmSSv4C8rUElXfjjUl1votnbJ-"/>
+<div class="absolute top-3 right-3 bg-white/90 backdrop-blur px-2 py-1 rounded-md text-[10px] font-bold text-primary">NOV 15</div>
+</div>
+<div class="p-5">
+<h4 class="font-bold text-on-surface group-hover:text-primary transition-colors">Workshop Upcycling</h4>
+<p class="text-xs text-on-surface-variant mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">location_on</span>
+                                    Online (Zoom)
+                                </p>
+<div class="mt-4 flex items-center justify-between border-t border-outline-variant pt-4">
+<div class="flex -space-x-2">
+<div class="size-6 rounded-full border-2 border-white bg-slate-200"></div>
+<div class="size-6 rounded-full border-2 border-white bg-slate-300"></div>
+<div class="size-6 rounded-full border-2 border-white bg-slate-400"></div>
+<div class="size-6 rounded-full border-2 border-white flex items-center justify-center bg-surface-container text-[8px] font-bold">+120</div>
+</div>
+<button class="text-xs font-bold text-secondary flex items-center gap-1">
+                                        Edit Details
+                                        <span class="material-symbols-outlined text-[14px]">edit</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+</div>
+<script>
+        // Simple micro-interaction for stats cards
+        document.querySelectorAll('.bg-surface-container-lowest').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.classList.add('translate-y-[-2px]');
+                card.style.transition = 'transform 0.2s ease-out';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.classList.remove('translate-y-[-2px]');
+            });
+        });
+    </script>
+</body></html>

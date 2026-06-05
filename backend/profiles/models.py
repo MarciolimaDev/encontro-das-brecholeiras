@@ -5,7 +5,7 @@ from django.db import models
 
 
 def customer_profile_photo_upload_to(instance, filename):
-    return f"customers/profiles/{uuid.uuid4().hex}.avif"
+    return f"customers/profiles/{uuid.uuid4().hex}.webp"
 
 
 class CustomerProfile(models.Model):

@@ -2,6 +2,7 @@ import uuid
 
 from django.conf import settings
 from django.db import models
+from django.utils.text import slugify
 
 
 def brand_logo_upload_to(instance, filename):
@@ -36,6 +37,7 @@ class Brand(models.Model):
         verbose_name="proprietário",
     )
     name = models.CharField("nome", max_length=150)
+    slug = models.SlugField("slug", max_length=180, unique=True, blank=True)
     instagram = models.CharField("Instagram", max_length=100, blank=True)
     segment = models.ForeignKey(
         Segment,
@@ -57,3 +59,17 @@ class Brand(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.name) or uuid.uuid4().hex[:12]
+            slug = base_slug
+            counter = 1
+
+            while Brand.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                counter += 1
+                slug = f"{base_slug}-{counter}"
+
+            self.slug = slug
+
+        super().save(*args, **kwargs)

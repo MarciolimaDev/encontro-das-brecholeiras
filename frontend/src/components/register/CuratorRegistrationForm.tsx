@@ -1,7 +1,8 @@
 "use client";
 
-import { FormEvent, ReactNode, useEffect, useMemo, useState } from "react";
+import { FormEvent, ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
 import { Icon } from "@/components/home/Icon";
 
 const SEGMENTS = ["Brechó", "Artesanato", "Alimentação", "Sebo", "Plantas", "Verduras", "Outros"];
@@ -90,7 +91,19 @@ const labelClass = "text-sm font-semibold text-text-secondary";
 const draftKey = "brecholeiras:member-application-draft";
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const cpfPattern = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
+const cepPattern = /^\d{5}-\d{3}$/;
 const whatsappPattern = /^\(\d{2}\) \d{5}-\d{4}$/;
+const delay = (milliseconds: number) => new Promise((resolve) => window.setTimeout(resolve, milliseconds));
+
+type SubmitStatus = "idle" | "preparing" | "sending" | "saving" | "success" | "error";
+type CepLookupStatus = "idle" | "loading" | "found" | "error";
+
+const submitSteps = [
+  { key: "preparing", title: "Validando cadastro", description: "Conferindo os dados antes do envio." },
+  { key: "sending", title: "Enviando pelo BFF", description: "A requisição sai pelo servidor do Next.js." },
+  { key: "saving", title: "Salvando no banco", description: "Aguardando confirmação do backend Django." },
+  { key: "success", title: "Cadastro enviado", description: "Dados registrados com sucesso." },
+] satisfies { key: Exclude<SubmitStatus, "idle" | "error">; title: string; description: string }[];
 
 type PersistedDraft = {
   step: number;
@@ -112,6 +125,11 @@ const formatCpf = (value: string) => {
     .replace(/^(\d{3})(\d)/, "$1.$2")
     .replace(/^(\d{3})\.(\d{3})(\d)/, "$1.$2.$3")
     .replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, "$1.$2.$3-$4");
+};
+
+const formatCep = (value: string) => {
+  const digits = onlyDigits(value).slice(0, 8);
+  return digits.replace(/^(\d{5})(\d)/, "$1-$2");
 };
 
 const formatWhatsapp = (value: string) => {
@@ -156,7 +174,11 @@ export function CuratorRegistrationForm() {
   const [form, setForm] = useState<FormState>(initial);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<SubmitStatus>("idle");
+  const [cepLookupStatus, setCepLookupStatus] = useState<CepLookupStatus>("idle");
+  const [cepLookupMessage, setCepLookupMessage] = useState("");
   const [draftLoaded, setDraftLoaded] = useState(false);
+  const cepLookupId = useRef(0);
 
   const benefits = useMemo(
     () => [
@@ -192,6 +214,54 @@ export function CuratorRegistrationForm() {
     setForm((previous) => ({ ...previous, [key]: value }));
   };
 
+  const lookupCep = async (cep: string) => {
+    const digits = onlyDigits(cep);
+    const requestId = cepLookupId.current + 1;
+    cepLookupId.current = requestId;
+
+    if (digits.length !== 8) {
+      setCepLookupStatus("idle");
+      setCepLookupMessage("");
+      return;
+    }
+
+    setCepLookupStatus("loading");
+    setCepLookupMessage("Buscando endereço...");
+
+    try {
+      const response = await fetch(`/api/cep/${digits}`);
+      const data = await response.json().catch(() => null);
+
+      if (cepLookupId.current !== requestId) return;
+
+      if (!response.ok) {
+        setCepLookupStatus("error");
+        setCepLookupMessage(data?.detail ?? "Não foi possível buscar este CEP.");
+        return;
+      }
+
+      setForm((previous) => ({
+        ...previous,
+        endereco: data.street || previous.endereco,
+        bairro: data.neighborhood || previous.bairro,
+        cidade: data.city || previous.cidade,
+        estado: data.uf || previous.estado,
+      }));
+      setCepLookupStatus("found");
+      setCepLookupMessage("Endereço preenchido automaticamente.");
+    } catch {
+      if (cepLookupId.current !== requestId) return;
+      setCepLookupStatus("error");
+      setCepLookupMessage("Serviço de CEP indisponível. Preencha manualmente.");
+    }
+  };
+
+  const handleCepChange = (value: string) => {
+    const cep = formatCep(value);
+    set("cep", cep);
+    void lookupCep(cep);
+  };
+
   const toggleArray = (key: "segmentos" | "atividades", value: string) => {
     setForm((previous) => ({
       ...previous,
@@ -218,7 +288,7 @@ export function CuratorRegistrationForm() {
     }
 
     if (step === 1) {
-      if (form.cep.trim().length < 8) return showError("Informe um CEP válido.");
+      if (!cepPattern.test(form.cep)) return showError("Informe o CEP no formato 00000-000.");
       if (form.endereco.trim().length < 2) return showError("Informe o endereço.");
       if (!form.numero.trim()) return showError("Informe o número.");
       if (form.bairro.trim().length < 2) return showError("Informe o bairro.");
@@ -262,9 +332,15 @@ export function CuratorRegistrationForm() {
     if (!validateStep()) return;
 
     setSubmitting(true);
+    setSubmitStatus("preparing");
     setMessage(null);
 
     try {
+      await delay(250);
+      setSubmitStatus("sending");
+      await delay(200);
+      setSubmitStatus("saving");
+
       const response = await fetch("/api/member-applications", {
         method: "POST",
         headers: {
@@ -275,16 +351,22 @@ export function CuratorRegistrationForm() {
       const data = await response.json().catch(() => null);
 
       if (!response.ok) {
+        setSubmitStatus("error");
         showError(data?.detail ?? "Não foi possível enviar o cadastro.");
+        window.setTimeout(() => setSubmitStatus("idle"), 1400);
         return;
       }
 
       window.localStorage.removeItem(draftKey);
+      setSubmitStatus("success");
       setMessage({ type: "success", text: "Cadastro enviado! Em breve entraremos em contato." });
       setForm(initial);
       setStep(0);
+      window.setTimeout(() => setSubmitStatus("idle"), 1200);
     } catch {
+      setSubmitStatus("error");
       showError("Não foi possível conectar ao servidor. Tente novamente.");
+      window.setTimeout(() => setSubmitStatus("idle"), 1400);
     } finally {
       setSubmitting(false);
     }
@@ -487,7 +569,25 @@ export function CuratorRegistrationForm() {
               {step === 1 && (
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-6">
                   <Field label="CEP" className="md:col-span-2">
-                    <input className={inputClass} value={form.cep} onChange={(event) => set("cep", event.target.value)} placeholder="00000-000" />
+                    <input
+                      className={inputClass}
+                      inputMode="numeric"
+                      maxLength={9}
+                      value={form.cep}
+                      onChange={(event) => handleCepChange(event.target.value)}
+                      placeholder="00000-000"
+                    />
+                    {cepLookupMessage && (
+                      <span
+                        className={
+                          cepLookupStatus === "error"
+                            ? "text-xs font-semibold text-primary"
+                            : "text-xs font-semibold text-secondary-dark"
+                        }
+                      >
+                        {cepLookupMessage}
+                      </span>
+                    )}
                   </Field>
                   <Field label="Endereço" className="md:col-span-4">
                     <input className={inputClass} value={form.endereco} onChange={(event) => set("endereco", event.target.value)} placeholder="Rua, avenida..." />
@@ -641,7 +741,111 @@ export function CuratorRegistrationForm() {
           </form>
         </div>
       </main>
+      <SubmitProgressModal status={submitStatus} />
     </div>
+  );
+}
+
+function SubmitProgressModal({ status }: { status: SubmitStatus }) {
+  const activeIndex =
+    status === "error"
+      ? 2
+      : Math.max(
+          submitSteps.findIndex((step) => step.key === status),
+          0,
+        );
+  const activeStep = status === "error" ? null : submitSteps[activeIndex];
+  const progress = status === "error" ? 100 : ((activeIndex + 1) / submitSteps.length) * 100;
+
+  return (
+    <AnimatePresence>
+      {status !== "idle" && (
+        <motion.div
+          animate={{ opacity: 1 }}
+          className="fixed inset-0 z-50 grid place-items-center bg-[#1c1c1c]/35 px-4 backdrop-blur-sm"
+          exit={{ opacity: 0 }}
+          initial={{ opacity: 0 }}
+          role="status"
+          aria-live="polite"
+        >
+          <motion.div
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            className="w-full max-w-md rounded-2xl border border-border bg-white p-6 shadow-2xl"
+            exit={{ opacity: 0, scale: 0.97, y: 8 }}
+            initial={{ opacity: 0, scale: 0.97, y: 8 }}
+            transition={{ duration: 0.22 }}
+          >
+            <div className="flex items-center gap-4">
+              <div
+                className={
+                  status === "error"
+                    ? "grid h-14 w-14 shrink-0 place-items-center rounded-full bg-[#E25555]/10 text-[#E25555]"
+                    : status === "success"
+                      ? "grid h-14 w-14 shrink-0 place-items-center rounded-full bg-secondary/20 text-secondary-dark"
+                      : "grid h-14 w-14 shrink-0 place-items-center rounded-full bg-primary/10 text-primary"
+                }
+              >
+                {status === "success" ? (
+                  <Icon name="check" className="h-7 w-7" />
+                ) : status === "error" ? (
+                  <span className="text-xl font-extrabold">!</span>
+                ) : (
+                  <motion.span
+                    animate={{ rotate: 360 }}
+                    className="h-7 w-7 rounded-full border-2 border-current border-t-transparent"
+                    transition={{ duration: 0.8, ease: "linear", repeat: Infinity }}
+                  />
+                )}
+              </div>
+
+              <div className="min-w-0">
+                <h2 className="font-display text-xl font-extrabold text-text-primary">
+                  {status === "error" ? "Envio interrompido" : activeStep?.title}
+                </h2>
+                <p className="mt-1 text-sm leading-6 text-text-secondary">
+                  {status === "error" ? "Confira a mensagem no formulário e tente novamente." : activeStep?.description}
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-6 h-2 overflow-hidden rounded-full bg-border">
+              <motion.div
+                animate={{ width: `${progress}%` }}
+                className={status === "error" ? "h-full rounded-full bg-[#E25555]" : "h-full rounded-full bg-primary"}
+                initial={{ width: 0 }}
+                transition={{ duration: 0.35 }}
+              />
+            </div>
+
+            <div className="mt-5 space-y-3">
+              {submitSteps.map((step, index) => {
+                const completed = status === "success" || (status !== "error" && index < activeIndex);
+                const active = status !== "error" && index === activeIndex;
+
+                return (
+                  <div className="flex items-center gap-3" key={step.key}>
+                    <span
+                      className={
+                        completed
+                          ? "grid h-7 w-7 place-items-center rounded-full bg-secondary text-white"
+                          : active
+                            ? "grid h-7 w-7 place-items-center rounded-full bg-primary text-white"
+                            : "grid h-7 w-7 place-items-center rounded-full border border-border text-text-secondary"
+                      }
+                    >
+                      {completed ? <Icon name="check" className="h-4 w-4" /> : <span className="text-xs font-bold">{index + 1}</span>}
+                    </span>
+                    <span className={active || completed ? "text-sm font-bold text-text-primary" : "text-sm font-semibold text-text-secondary"}>
+                      {step.title}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
 
